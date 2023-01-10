@@ -5,8 +5,6 @@
 </p>
 
 
-First of all..why Mr.Bean? Well, I grew up watching Mr.Bean and while doing this project, I think it'd be good if this be installed in Mr.Bean's mini cooper so that he could travel to the future and feel how driving a Tesla's like 🥰
-Let's get started!
 
 This notebook explains custom training of YOLOv5 model implemented in PyTorch for object detection in Colab using the dataset from [Kaggle](https://www.kaggle.com/datasets/andrewmvd/road-sign-detection). The YOLOv5 code is based on the official code from [YOLOv5](https://github.com/ultralytics/yolov5) by Ultralytics. 
 
