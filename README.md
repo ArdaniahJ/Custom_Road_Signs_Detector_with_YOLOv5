@@ -13,7 +13,7 @@ This notebook explains custom training of YOLOv5 model implemented in PyTorch fo
 The dataset is in __.xml format__.
 
 
-### Tutorial to Implement YOLOv5 from scratch [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1kG-WgnZCJaeFDR9clfYgWDAyT34SPQNG?usp=sharing)
+### Project Code [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1kG-WgnZCJaeFDR9clfYgWDAyT34SPQNG?usp=sharing)
 
 ## Requirements
 
