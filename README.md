@@ -15,10 +15,6 @@ The dataset is in __.xml format__.
 
 ### Tutorial to Implement YOLOv5 from scratch [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1kG-WgnZCJaeFDR9clfYgWDAyT34SPQNG?usp=sharing)
 
-If you want to understand how to implement this detector by yourself from sratch, the you can go through this very detailed article I wrote in Blogger. Perfect for beginner as I started my object detection with YOLO series from this version too.
-
-As of now, the code only contains the detection module, but you should expect the training module soon ;)
-
 ## Requirements
 
 * Local machine
