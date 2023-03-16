@@ -1,4 +1,4 @@
-<h1 align="center">Road Signs Detector with YOLOv5 </h1>
+<h1 align="center">Custom Road Signs Detector with YOLOv5 </h1>
 <div align="center">
   A baby step to building a full-fledged Tesla 😝
 </div>
