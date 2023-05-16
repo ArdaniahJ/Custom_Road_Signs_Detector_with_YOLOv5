@@ -36,7 +36,7 @@ In the above example, there are 3 annotations for the image;
 <br>
 However, the dataset is in __PASCAL VOC.xml format__ which is not the YOLOv5 format for training and testing. It is used for annotation, not for training and testing, thus said from YOLOv3 & YOLOv4. Therefore, there are __3 steps__ needed to convert the __.xml to .txt__ format.
 <br>
-1. Step 1: Parse the XML file 
+1. __Step 1__: Parse the XML file 
 
 ```python
 # Function to get the data from XML Annotation
@@ -76,7 +76,7 @@ def extract_info_from_xml(xml_file):
     return info_dict
   ```
 
-2. Step 2: Connvert the XML file
+2. __Step 2__: Connvert the XML file
 ```python
 # Dictionary that maps class names to IDs
 class_name_to_id_mapping = {"trafficlight": 0,
@@ -118,7 +118,7 @@ def convert_to_yolov5(info_dict):
     print("\n".join(print_buffer), file= open(save_file_name, "w"))
 ```
 
-3. Step 3: Get the annotations
+3. __Step 3__: Get the annotations
 ```python
 # Get the annotations
 annotations = [os.path.join('annotations', x) for x in os.listdir('annotations') if x[-3:] == "xml"]
@@ -144,10 +144,10 @@ Road Signs Dataset are grouped into four classes:
 
 ## Project Code 
 
-The notebook can be viewed publicly on [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1kG-WgnZCJaeFDR9clfYgWDAyT34SPQNG?usp=sharing)
+The notebook can be viewed on [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1kG-WgnZCJaeFDR9clfYgWDAyT34SPQNG?usp=sharing)
 
 
-# Setup the YAML config File for Training 
+## Setup the YAML config File for Training 
 This is the heart of the project where the `data.yaml` is customly configured. YAML config file is used to specify the configuration settings for YOLO model. It contains various parameters and options that define the architecture, training settings, and other configurations of the model that relates to the dataset. The following parameters are to be defined:
 1. `train`, `test`, & `val`: Location of the train, test and validation images. 
 2. `nc`: Number of classes in the dataset
@@ -167,11 +167,11 @@ names: ["trafficlight","stop", "speedlimit","crosswalk"]
 ```
 YOLOv5 expects to find the training labels for the images in the folder whose name can be derived by replacing `images` with `labels` in the path to dataset images. For example, in the above example, YOLOv5 will look for train labels in `/content/yolov5/Road_Sign_Dataset/images/train/`.
 
-# Hyperparameter Config File
+## Hyperparameter Config File
 This config file on the other hand helps to define the hyperparameter for NN during the training process. This project used the default config which is `data/hyp.scratch-low.yaml`. 
 
-# YOLOv5 Custom Network Architecture 
-`yolov5s.yaml` contains the architecture required for training on COCO dataset. However, since this project doesn't use COCO dataset, the configuration thus needs to be changed. Below is the magic command `writetemplate` that can be used in IPython to write the contents of a code block to a specific file, in this case; the hyperparameter needed to be changed is only number of classes from `nc: 80` to `nc: 4`.
+## YOLOv5 Custom Network Architecture 
+`yolov5s.yaml` contains the architecture required for training on COCO dataset. However, since this project doesn't use COCO dataset, the configuration thus needs to be changed. <br> Below is the magic command `writetemplate` that can be used in IPython to write the contents of a code block to a specific file, in this case; the hyperparameter needed to be changed is only number of classes from `nc: 80` to `nc: 4`.
 ```python
 from IPython.core.magic import register_line_cell_magic
 
@@ -195,8 +195,10 @@ The YOLOv5s model is trained by specifying __dataset, batch-size, image size & p
 # Detector Performance Log
 There are two ways of keeping in track of the model's training performance.
 1. __Remotely__: Tensorboard
-  + Training:![tensorboard remote log 1](https://github.com/ArdaniahJ/Custom_Road_Signs_Detector_with_YOLOv5/assets/120354757/3ed63982-4baa-48fd-aab7-e869e2bc3156)
-  + Testing: ![tensorboard remote log 2](https://github.com/ArdaniahJ/Custom_Road_Signs_Detector_with_YOLOv5/assets/120354757/e411a0d8-f00d-45e0-982e-2423b5a79dc0)
+  + Training:
+  ![tensorboard remote log 1](https://github.com/ArdaniahJ/Custom_Road_Signs_Detector_with_YOLOv5/assets/120354757/3ed63982-4baa-48fd-aab7-e869e2bc3156)
+  + Testing:
+  ![tensorboard remote log 2](https://github.com/ArdaniahJ/Custom_Road_Signs_Detector_with_YOLOv5/assets/120354757/e411a0d8-f00d-45e0-982e-2423b5a79dc0)
 2. __Locally__: Some old school graph in case tensorboard isn't working 😛
 ![detector local log graph](https://github.com/ArdaniahJ/Custom_Road_Signs_Detector_with_YOLOv5/assets/120354757/a0d80168-55b1-41e8-87d8-66ffa45d44b8)
 
