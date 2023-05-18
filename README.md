@@ -34,8 +34,9 @@ In the above example, there are 3 annotations for the image;
 [Class label] [center in X] [center in y] [Width] [Height]
 ```
 <br>
-However, the dataset is in __PASCAL VOC.xml format__ which is not the YOLOv5 format for training and testing. It is used for annotation, not for training and testing, thus said from YOLOv3 & YOLOv4. Therefore, there are __3 steps__ needed to convert the __.xml to .txt__ format.
-<br>
+However, the dataset is in PASCAL VOC format which is not the YOLOv5 format for training and testing. It is used for annotation, not for training and testing, thus said from YOLOv3 & YOLOv4. Therefore, there are 3 steps needed to convert the .xml to .txt format.
+
+
 1. __Step 1__: Parse the XML file 
 
 ```python
@@ -141,19 +142,18 @@ Road Signs Dataset are grouped into four classes:
 3. Speedlimit
 4. Crosswalk
 
+## Training Preparation
+There are two config files that are crucial to the heart of the project which are:
+1. __Data YAML Config File__ : Custom dataset related configuration 
+2. __Hyperparameter Config File__ : Fine-tuning the training processes to specific hyperparameters requirements
 
-## Project Code 
-
-The notebook can be viewed on [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1kG-WgnZCJaeFDR9clfYgWDAyT34SPQNG?usp=sharing)
-
-
-## Setup the YAML config File for Training 
-This is the heart of the project where the `data.yaml` is customly configured. YAML config file is used to specify the configuration settings for YOLO model. It contains various parameters and options that define the architecture, training settings, and other configurations of the model that relates to the dataset. The following parameters are to be defined:
+### Setup the YAML config File for Training 
+This is where `data.yaml` is customly configured. YAML config file is used to specify the configuration settings for YOLO model. It contains various parameters and options that define the architecture, training settings, and other configurations of the model that relates to the dataset. The following parameters are to be defined:
 1. `train`, `test`, & `val`: Location of the train, test and validation images. 
 2. `nc`: Number of classes in the dataset
 3. `names`: Names of the calsses in the dataset. The index of the classes in this list would be used as an identifier for the class names in the code. 
 
-Create a new file called `road_sign_data.yaml` and place it in the `yolov5/data` folder. Then populate it with the foloowing. 
+Create a new file called `road_sign_data.yaml` and place it in the `yolov5/data` folder. Then populate it with the following. 
 ``` python
 train: /content/yolov5/Road_Sign_Dataset/images/train/
 val: /content/yolov5/Road_Sign_Dataset/images/val/
@@ -167,7 +167,7 @@ names: ["trafficlight","stop", "speedlimit","crosswalk"]
 ```
 YOLOv5 expects to find the training labels for the images in the folder whose name can be derived by replacing `images` with `labels` in the path to dataset images. For example, in the above example, YOLOv5 will look for train labels in `/content/yolov5/Road_Sign_Dataset/images/train/`.
 
-## Hyperparameter Config File
+### Hyperparameter Config File
 This config file on the other hand helps to define the hyperparameter for NN during the training process. This project used the default config which is `data/hyp.scratch-low.yaml`. 
 
 ## YOLOv5 Custom Network Architecture 
@@ -180,8 +180,8 @@ def writetemplate(line, cell):
     with open(line, 'w') as f:
         f.write(cell.format(**globals()))
 ```
-# Training the Custom Road Signs Detector Model
-The YOLOv5s model is trained by specifying __dataset, batch-size, image size & pretrained weights yolov5s.pt__. Parameters used are as below:
+## Training the Custom Road Signs Detector Model
+This section is the heart of the project. YOLOv5s model is trained by specifying __dataset, batch-size, image size & pretrained weights yolov5s.pt__. Parameters used are as below:
 + `--img` - specifies the input image size as 640x640 pixels
 + `--batch` - batch size (model weights are updated with each batch)
 + `--epochs` - number of trainings to run
@@ -191,6 +191,16 @@ The YOLOv5s model is trained by specifying __dataset, batch-size, image size & p
 + `--weights` - path to the initial weights file to use for the model
 + `--workers` - sets the number of data loading workers to speed up the training process
 + `--name` - name of the training run, which will be used to create a directory to store the training results
+<br>
+
+The training code inclusive to all parameters above is as below:
+
+```python
+# Redirect the directory to YOLOv5 to run the training (in order not to lose the path)
+%cd /content/yolov5/
+
+!python train.py --img 640 --batch 32 --epochs 100 --cfg './models/custom_yolov5s.yaml' --hyp './data/hyps/hyp.scratch-low.yaml' --data './road_sign_data.yaml' --weights './yolov5s.pt' --workers 24 --name yolo_road_det
+```
 
 # Detector Performance Log
 There are two ways of keeping in track of the model's training performance.
@@ -224,4 +234,8 @@ During inference, the trained YOLO model takes an input image or video frame and
 
 The command runs the detect.py script, which performs object detection on the specified source images using the trained YOLO model. The output of the detection process will depend on the implementation of detect.py and may include bounding box coordinates, object labels, confidence scores, and visualized results.
 ```
+
+## Project Code 
+
+The notebook can be viewed on [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1kG-WgnZCJaeFDR9clfYgWDAyT34SPQNG?usp=sharing)
 
