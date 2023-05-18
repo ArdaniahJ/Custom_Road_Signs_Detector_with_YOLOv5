@@ -133,7 +133,7 @@ annotations = [os.path.join('annotations', x) for x in os.listdir('annotations')
 
 Below is the image as the result after testing the converted annotation <br>
 
-![Annotation testing](https://github.com/ArdaniahJ/Custom_Road_Signs_Detector_with_YOLOv5/assets/120354757/5f39a40c-acfd-4c4b-96ff-2e580049c01b)
+![Annotation testing](https://github.com/ArdaniahJ/Custom_Road_Signs_Detector_with_YOLOv5/blob/main/img/Annotation%20testing.png)
 
 Road Signs Dataset are grouped into four classes:
 1. Traffic Light
