@@ -4,9 +4,8 @@
 </div>
 <br>
 <p align="center">
-  <img src="https://github.com/ArdaniahJ/Custom_Object_Detection_with_YOLOv5/blob/main/YOLOv5.gif" alt="BeanTesla" />
+  <img src="https://github.com/ArdaniahJ/Custom_Road_Signs_Detector_with_YOLOv5/blob/main/img/YOLOv5.gif" alt="BeanTesla" />
 </p>
-
 
 
 This notebook explains custom training of YOLOv5 model implemented in PyTorch for object detection in Colab using the dataset from [Kaggle](https://www.kaggle.com/datasets/andrewmvd/road-sign-detection). The YOLOv5 code is based on the official code from [YOLOv5](https://github.com/ultralytics/yolov5) by Ultralytics. 
@@ -202,40 +201,69 @@ The training code inclusive to all parameters above is as below:
 !python train.py --img 640 --batch 32 --epochs 100 --cfg './models/custom_yolov5s.yaml' --hyp './data/hyps/hyp.scratch-low.yaml' --data './road_sign_data.yaml' --weights './yolov5s.pt' --workers 24 --name yolo_road_det
 ```
 
-# Detector Performance Log
+## Detector Performance Log
 There are two ways of keeping in track of the model's training performance.
-1. __Remotely__: Tensorboard
-  + Training:
-  ![tensorboard remote log 1](https://github.com/ArdaniahJ/Custom_Road_Signs_Detector_with_YOLOv5/assets/120354757/3ed63982-4baa-48fd-aab7-e869e2bc3156)
-  + Testing:
-  ![tensorboard remote log 2](https://github.com/ArdaniahJ/Custom_Road_Signs_Detector_with_YOLOv5/assets/120354757/e411a0d8-f00d-45e0-982e-2423b5a79dc0)
-2. __Locally__: Some old school graph in case tensorboard isn't working 😛
-![detector local log graph](https://github.com/ArdaniahJ/Custom_Road_Signs_Detector_with_YOLOv5/assets/120354757/a0d80168-55b1-41e8-87d8-66ffa45d44b8)
+1. __Remotely__: Tensorboard <br><br>
+a. Training:<br><br>
+<img src="https://github.com/ArdaniahJ/Custom_Road_Signs_Detector_with_YOLOv5/blob/main/img/tensorboard%20remote%20log%201.PNG" width="550" height="450"/><br><br>
+b. Testing: <br><br>
+<img src="https://github.com/ArdaniahJ/Custom_Road_Signs_Detector_with_YOLOv5/blob/main/img/tensorboard%20remote%20log%202.PNG" width="550" height="450"/><br><br>
+
+2. __Locally__: Some old school graph in case tensorboard isn't working 😛 <br>
+<br><img src="https://github.com/ArdaniahJ/Custom_Road_Signs_Detector_with_YOLOv5/blob/main/img/detector%20local%20log%20graph.png" width="650" height="450"/>
 
 
-## Detection Example
+## Inference with custom YOLOv5s Trained Weights
+Inference is the deployment phase of the object detection model (in this case, the __road signs detector__) on new, unseen images or videos to detect and locate objects.<br><br>
+
+During inference, the trained YOLO model takes an input image or video frame and processes it through its layer to generate bounding box predictions and class probabilities for the detected objects. These predictions are then used to identify and locate objects in the input data. The parameters used are breakdown below:
+
+```python
+# Redirect the directory to YOLOv5 to not lose the paths
+%cd /content/yolov5/ 
+!python detect.py --source './Road_Sign_Dataset/images/test' --weights './runs/train/yolo_road_det/weights/best.pt' --conf 0.25 --name yolo_road_det
+```
+This line executes a Python script named `detect.py` with the following command-line arguments:
++ `--source`: the source path for the input images to be detected. 
++ `--weights`: the path to the weights file of the trained model. __The weights file best.pt is located in the ./runs/train/yolo_road_det/weights/ directory.__
++ `--conf 0.25`: the confidence threshold for object detection. this threshold determines the minimum confidence score required for a detected object to be considered valid.
++ `--name yolo_road_det`: the name or identifier for this inference run to save the output or for tracking different runs.
+
+## Detection Examples
 ![sample of detection](https://user-images.githubusercontent.com/120354757/207774813-962ea140-bf1c-4880-989c-fb509121ffa1.png)
 
-# Inference with custom YOLOv5s Trained Weights
-Inference is the deployment phase of the object detection model (in this case, the road signs detector) on new, unseen images or videos to detect and locate objects. 
-During inference, the trained YOLO model takes an input image or video frame and processes it through its layer to generate bounding box predictions and class probabilities for the detected objects. These predictions are then used to identify and locate objects in the input data. The parameters used are breakdown below:
+You may run the inference on all test images with following codes below:
+```python
+# Display inference on ALL test images
+detect_path = r'/content/yolov5/runs/detect/yolo_road_det'
+
+images = []
+for img_path in glob.glob(detect_path + '/*.png'):
+    images.append(mpimg.imread(img_path))
+
+plt.figure(figsize=(100,100))
+columns = 4
+for i, image in enumerate(images):
+    plt.subplot((int(len(images) / columns + 1)), columns, i + 1)
+    plt.tick_params(left = False, right = False , labelleft = False, labelbottom = False, bottom = False)
+    plt.imshow(image)
 ```
-%cd /content/yolov5/: This line changes the current directory to /content/yolov5/. The %cd command is typically used in Jupyter Notebook or Google Colab to change the working directory.
 
-!python detect.py --source './Road_Sign_Dataset/images/test' --weights './runs/train/yolo_road_det/weights/best.pt' --conf 0.25 --name yolo_road_det: This line executes a Python script named detect.py with the following command-line arguments:
+### Run the detector on external public source: Youtube Road Drive Video
+```python
+# Install packages to use Youtube contents
+!pip install pafy youtube_dl
+# Redirect the directory to YOLOv5
+%cd /content/yolov5/
 
---source './Road_Sign_Dataset/images/test': Specifies the source path for the input images to be detected. In this case, it is the ./Road_Sign_Dataset/images/test directory.
-
---weights './runs/train/yolo_road_det/weights/best.pt': Specifies the path to the weights file of the trained model. The weights file best.pt is located in the ./runs/train/yolo_road_det/weights/ directory.
-
---conf 0.25: Sets the confidence threshold for object detection to 0.25. This threshold determines the minimum confidence score required for a detected object to be considered valid.
-
---name yolo_road_det: Specifies the name or identifier for this inference run. It can be used for saving the output or for tracking different runs.
-
-The command runs the detect.py script, which performs object detection on the specified source images using the trained YOLO model. The output of the detection process will depend on the implementation of detect.py and may include bounding box coordinates, object labels, confidence scores, and visualized results.
+# Run inference on Youtube video by specifying the url (make sure it's not too long as it'll take to long to run the inference)
+!python detect.py --source "https://www.youtube.com/watch?v=bz5hS2pPAkM&list=PL6Jglb1uquzAmTE70OkROW_hCZmy5hJjA&index=7&ab_channel=YourCameraman"
 ```
+This is the only one i found with quality on Youtube 🤕 You may use another source, since I would like to show how I did it through Youtube. 
+
+Below is the snippet from the 20mins video. Full output video can be found here.
+
 
 ## Project Code 
-
 The notebook can be viewed on [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1kG-WgnZCJaeFDR9clfYgWDAyT34SPQNG?usp=sharing)
 
