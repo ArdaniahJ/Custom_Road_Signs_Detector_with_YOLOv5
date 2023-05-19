@@ -250,18 +250,35 @@ for i, image in enumerate(images):
 ```
 
 ### Run the detector on external public source: Youtube Road Drive Video
+Since Youtube has update their policies eversince, the codes for packages that are responsible for downloading and parsing Youtube videos and metadata hence changed. Below is the below and after.<br>
+__Before__
+
 ```python
 # Install packages to use Youtube contents
-!pip install pafy youtube_dl
+!pip install --upgrade pafy youtube_dl
+```
+__Currently, as of Mar 31, 2023__
+```python
+!pip install -U youtube-dl
+!pip install ffmpeg-python
+!pip uninstall -y pafy
+!pip install -U youtube-dl==2020.12.2 pafy
+```
+__Run the detector on Youtube video__
+```
 # Redirect the directory to YOLOv5
 %cd /content/yolov5/
 
 # Run inference on Youtube video by specifying the url (make sure it's not too long as it'll take to long to run the inference)
-!python detect.py --source "https://www.youtube.com/watch?v=bz5hS2pPAkM&list=PL6Jglb1uquzAmTE70OkROW_hCZmy5hJjA&index=7&ab_channel=YourCameraman"
+!python detect.py --source "https://www.youtube.com/watch?v=bz5hS2pPAkM"
 ```
 This is the only one i found with quality on Youtube 🤕 You may use another source, since I would like to show how I did it through Youtube. 
 
-Below is the snippet from the 20mins video. Full output video can be found here.
+Below is the snippet from the 20mins video. Full output video can be found ![here](https://drive.google.com/file/d/13xZP1i8ucjA0sDBhhFvOgHYNZH7iyffj/view?usp=sharing).
+
+<p align="center">
+  <img src="https://github.com/ArdaniahJ/Custom_Road_Signs_Detector_with_YOLOv5/blob/main/img/Road_Sign_Output_Video.gif" alt="BeanTesla Output" />
+</p>
 
 
 ## Project Code 
